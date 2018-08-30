@@ -5,7 +5,7 @@ import sys
 sys.setrecursionlimit(2147000)
 
 deck = [1,2,3,4,5,6,7,8,9,10,10,10,10]
-deck = deck * 24 #times 24 for six decks
+deck = deck * 4
 playerHand = []
 dealerHand = []
 playerValue = 0
@@ -17,6 +17,8 @@ loses = 0
 draws = 0
 hands = 100
 hands2 = 100
+soft17 = 0#does dealer hit soft 17?
+
 def setDefaults():
 	global playerHand
 	global dealerHand
@@ -30,7 +32,7 @@ def setDefaults():
 		if (len(deck)) < 10:
 			del(deck)
 			deck = [1,2,3,4,5,6,7,8,9,10,10,10,10]
-			deck = deck * 24
+			deck = deck * 4
 		del(playerHand)
 		del(dealerHand)
 		playerHand = []
@@ -149,12 +151,13 @@ def determineMoveDealer():
 		else:
 			hitCard("dealer")
 	else:
-		if dealerValue > 16 and dealerValue < 22:
-			standDealer()
-		elif dealerValue > 21:
-			doBust("dealer")
-		else:
+		if dealerValue == 17 and soft17 == 1:
 			hitCard("dealer")
+		else:
+			if dealerValue > 16 and dealerValue < 22:
+				standDealer()
+			else:
+				hitCard("dealer")
 
 def standDealer(): 
 	doShowdown()
